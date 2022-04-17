@@ -19,3 +19,23 @@
     color: red;
     display: none;
  }
+
+ .pw_notavail {
+    color: red;
+    display: none;
+ }
+
+ .pw_avail {
+    color: #6A82FB;
+    display: none;
+ }
+
+ .positive {
+    color: #6A82FB;
+    display: none;
+ }
+
+ .negative {
+    color: red;
+     display: none;
+ }

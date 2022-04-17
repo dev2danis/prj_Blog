@@ -2,18 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>dev2dani's Blog</title>
+
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon.png">
+
+    <!-- Custom -->
+    <link href="/css/style.css" rel="stylesheet">
 
     <!-- Custom -->
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
 
+<script src="https://www.w3schools.com/lib/w3.js"></script>
+
+<header w3-include-html="/nav.html"></header>
+
+<form action="/member/join" id="form" method="post">
 <table border="1">
     <tr>
         <td>ID</td>
         <td><input type="text" id="id" name="id" minlength="4" maxlength="8"></td>
-        <td><button type="button" id="id_check" onclick="check();">Check</button></td>
+        <td><button type="button" id="id_check" onclick="check()">Check</button></td>
     </tr>
     <tr>
         <td colspan="3">
@@ -26,28 +45,53 @@
         <td><input type="password" id="password" name="password" minlength="8" maxlength="20"></td>
     </tr>
     <tr>
+        <td colspan="3">
+            <span id="pw_notavail" class="pw_notavail">Password must be between 8 and 20 characters</span>
+            <span id="pw_avail" class="pw_avail">You can use this password.</span>
+        </td>
+    </tr>
+    <tr>
         <td>Confirm Password</td>
-        <td><input type="password" id="check" name="check" minlength="8" maxlength="20"></td>
+        <td><input type="password" id="confirm" name="confirm" minlength="8" maxlength="20"></td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <span id="pw_notmatch" class="pw_notavail">Passwords do not match.</span>
+            <span id="pw_match" class="pw_avail">The password is the same.</span>
+        </td>
     </tr>
     <tr>
         <td>Name</td>
-        <td><input type="text" id="name" name="name" minlength="6" maxlength="20"></td>
+        <td><input type="text" id="name" name="name" minlength="3" maxlength="20"></td>
     </tr>
     <tr>
         <td>E-mail</td>
-        <td><input type="email" id="email" name="email"></td>
+        <td><input type="email" id="email" name="email" minlength="10"></td>
     </tr>
     <tr>
-        <td colspan="3"><button type="submit">Join</button></td>
+        <td colspan="3"><button id="submit" type="submit" onclick="join()" disabled="disabled">Join</button></td>
     </tr>
 </table>
+</form>
 
+
+<!-- bootstrap js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
+w3.includeHTML();
+
+var isCheckId = false;
+var isCheckPw = false;
+var isCheckSame = false;
+var isCheckName = false;
+var isCheckEmail = false;
+
 function check(){
     id = $("#id").val();
-
+    console.log(id);
     $.ajax({
         url: "/member/idCheck",
         type: "post",
@@ -57,13 +101,72 @@ function check(){
             if(data) {
                 $(".id_ok").css("display", "block");
                 $(".id_already").css("display", "none");
+                isCheckId = true;
             } else {
                 $(".id_ok").css("display", "block");
                 $(".id_already").css("display", "none");
+                isCheckId = false;
             }
+            checkAllField();
         }
     });
 }
+
+$("#password").on("propertychange change keyup paste input", function() {
+    var currentVal = $(this).val();
+    if(currentVal.length >= 8 && currentVal.length <= 20){
+        $("#pw_avail").css("display", "block");
+        $("#pw_notavail").css("display", "none");
+        isCheckPw = true;
+    } else {
+        $("#pw_notavail").css("display", "block");
+        $("#pw_avail").css("display", "none");
+        isCheckPw = false;
+    }
+    checkAllField();
+});
+
+$("#confirm").on("propertychange change keyup paste input", function() {
+    var currentVal = $(this).val();
+    var pw = $("#password").val();
+    if(currentVal == pw){
+        $("#pw_match").css("display", "block");
+        $("#pw_notmatch").css("display", "none");
+        isCheckSame = true;
+    }
+    else {
+        $("#pw_match").css("display","none");
+        $("#pw_notmatch").css("display", "block");
+        isCheckSame = false;
+    }
+    checkAllField();
+});
+
+$("#name").on("propertychange change keyup paste input", function() {
+    var name = $(this).val();
+    if(name.length >= 3 && name.length <= 20)
+        isCheckName = true;
+    else
+        isCheckName = false;
+    checkAllField();
+});
+
+$("#email").on("propertychange change keyup paste input", function() {
+    var email = $("#email").val();
+    if(email.length >= 10)
+        isCheckEmail = true;
+    else
+        isCheckEmail = false;
+    checkAllField();
+});
+
+function checkAllField(){
+    if(isCheckId && isCheckPw && isCheckSame && isCheckName && isCheckEmail)
+        $("#submit").prop("disabled", false);
+    else
+        $("#submit").prop("disabled", true);
+}
+
 </script>
 
 </body>

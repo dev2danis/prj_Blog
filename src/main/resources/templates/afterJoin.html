@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dev2dani's Blog</title>
+</head>
+<body>
+
+<input type="text" id="result" hidden="true" th:value="${result}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    var result = $("#result").val();
+    if($("#result").val()) {
+      alert("Thanks for join us!");
+    }
+    else {
+      alert("Somthing is wrong... please try again or contact us at dev2danis@gmail.com");
+    }
+    location.href="/";
+  });
+</script>
+</body>
+</html>
