@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- Custom -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<table border="1">
+    <tr>
+        <td>ID</td>
+        <td><input type="text" id="id" name="id" minlength="4" maxlength="8"></td>
+        <td><button type="button" id="id_check" onclick="check();">Check</button></td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <span class="id_ok">This ID is available.</span>
+            <span class="id_already">This ID is not available</span>
+        </td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td><input type="password" id="password" name="password" minlength="8" maxlength="20"></td>
+    </tr>
+    <tr>
+        <td>Confirm Password</td>
+        <td><input type="password" id="check" name="check" minlength="8" maxlength="20"></td>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td><input type="text" id="name" name="name" minlength="6" maxlength="20"></td>
+    </tr>
+    <tr>
+        <td>E-mail</td>
+        <td><input type="email" id="email" name="email"></td>
+    </tr>
+    <tr>
+        <td colspan="3"><button type="submit">Join</button></td>
+    </tr>
+</table>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+function check(){
+    id = $("#id").val();
+
+    $.ajax({
+        url: "/member/idCheck",
+        type: "post",
+        dataType: "json",
+        data: {"userid":id},
+        success: function(data){
+            if(data) {
+                $(".id_ok").css("display", "block");
+                $(".id_already").css("display", "none");
+            } else {
+                $(".id_ok").css("display", "block");
+                $(".id_already").css("display", "none");
+            }
+        }
+    });
+}
+</script>
+
+</body>
+</html>

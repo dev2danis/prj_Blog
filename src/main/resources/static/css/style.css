@@ -9,3 +9,13 @@
     left: 50%;
     transform: translate(-50%, -50%);
  }
+
+ .id_ok {
+    color: #6A82FB;
+    display: none;
+ }
+
+ .id_already {
+    color: red;
+    display: none;
+ }
